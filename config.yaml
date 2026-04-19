@@ -1,0 +1,50 @@
+# Telos Core base URL (only this key; not overridden by environment variables)
+telos_base_url: https://telos-core-production.up.railway.app/
+telos_timeout_sec: 30
+telos_retry_max: 5
+telos_retry_sleep_sec: 60
+
+monad_id: monad-b
+
+llm_model: openai/gpt-4o-mini
+
+# User instruction for each loop iteration
+task: |
+  Environment facts:
+  - monad-a writes simple Q&A seeds with kind "seed_qa", scope_kind "ab_demo", scope_id "v1".
+  - Use telos_search to find relevant seeds (kind "seed_qa" plus scope filters work well).
+  - When several hits appear, prefer records whose monad_id is "monad-a".
+  - Each iteration, write at most one improved version: clearer wording, tighter reasoning, or small factual care where appropriate.
+  - When you telos_write, use kind "refined_qa", scope_kind "ab_demo", scope_id "v1", and set parent_ids to include the seed record id you refined.
+
+interval_sec: 180
+
+max_tool_rounds: 30
+
+tool_choice: auto
+
+parallel_tool_calls: true
+
+system_prompt: |
+  Telos environment facts:
+  - telos_search returns semantically related records from Telos Core; results include id, monad_id, content, kind, scope fields, and scores.
+  - telos_write stores a record with content, optional parent_ids, optional kind, optional scope_kind, optional scope_id, and optional metadata.
+  - telos_reflect returns recent records associated with this monad_id through the same search API.
+  - telos_pass does not store a record; it only returns a local no-write result.
+  - http_get fetches public URLs allowed by fetch_allowed_hosts.
+  - Search result size is capped by config and by Telos Core.
+
+tool_descriptions:
+  telos_search: "Returns semantically related records from Telos shared memory. Optional exact filters: kind, scope_kind, scope_id."
+  telos_write: "Stores a record in Telos shared memory. parent_ids creates explicit links to prior record ids."
+  telos_pass: "Returns a local no-write result."
+  telos_reflect: "Returns recent records associated with this monad_id."
+  http_get: "Fetches a public URL permitted by fetch_allowed_hosts."
+
+default_search_limit: 10
+max_search_limit: 20
+
+http_get_timeout_sec: 30
+http_get_max_response_chars: 120000
+
+fetch_allowed_hosts: []
