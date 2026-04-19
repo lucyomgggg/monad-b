@@ -6,7 +6,7 @@ telos_retry_sleep_sec: 60
 
 monad_id: monad-b
 
-llm_model: openai/gpt-4o-mini
+llm_model: openrouter/x-ai/grok-4.1-fast
 
 # User instruction for each loop iteration
 task: |
