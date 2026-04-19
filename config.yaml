@@ -14,7 +14,7 @@ task: |
   - What you telos_write stays in Telos; on a later iteration telos_search can return it, so your own traces influence your next choices.
   - Seeds to refine use kind "seed_qa", scope_kind "ab_demo", scope_id "v1" (hits often show monad_id "monad-a").
   - You may telos_search before telos_write.
-  - At most one refined write per iteration; kind "refined_qa", same scope, parent_ids includes the seed record id you used.
+  - search and write one answer based on the search result or your own knowledge.
 
 interval_sec: 180
 
