@@ -11,11 +11,10 @@ llm_model: openrouter/x-ai/grok-4.1-fast
 # User instruction for each loop iteration
 task: |
   Environment facts:
-  - monad-a writes simple Q&A seeds with kind "seed_qa", scope_kind "ab_demo", scope_id "v1".
-  - Use telos_search to find relevant seeds (kind "seed_qa" plus scope filters work well).
-  - When several hits appear, prefer records whose monad_id is "monad-a".
-  - Each iteration, write at most one improved version: clearer wording, tighter reasoning, or small factual care where appropriate.
-  - When you telos_write, use kind "refined_qa", scope_kind "ab_demo", scope_id "v1", and set parent_ids to include the seed record id you refined.
+  - What you telos_write stays in Telos; on a later iteration telos_search can return it, so your own traces influence your next choices.
+  - Seeds to refine use kind "seed_qa", scope_kind "ab_demo", scope_id "v1" (hits often show monad_id "monad-a").
+  - You may telos_search before telos_write.
+  - At most one refined write per iteration; kind "refined_qa", same scope, parent_ids includes the seed record id you used.
 
 interval_sec: 180
 
